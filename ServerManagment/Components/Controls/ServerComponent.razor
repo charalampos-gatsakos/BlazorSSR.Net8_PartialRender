@@ -1,0 +1,8 @@
+﻿@using ServerManagement.Models
+<p>
+    @server.Name is in @server.City that is @(server.IsOnline?"online":"offline")
+</p>
+
+@code {
+    private Server server = new Server { Name = "Server 1", City = "Toronto" };
+}
