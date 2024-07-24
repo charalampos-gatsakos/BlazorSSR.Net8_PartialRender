@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServerManagement.Models
+namespace ServerManagment.Models
 {
     public class Server
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace ServerManagement.Models
+namespace ServerManagment.Models
 {
     public static class ServersRepository
     {

@@ -1,8 +1,9 @@
 ﻿@page "/servers/create";
-@using ServerManagement.Models
-@inject NavigationManager navigationManager
+@using ServerManagment.Models
+@inject NavigationManager NavigationManager
 
 <h3>CreateServer</h3>
+<br />  
 
 @if (server != null)
 {
@@ -12,34 +13,37 @@
 
         <InputNumber @bind-Value="server.ServerId" hidden></InputNumber>
 
-        <FieldComponent Label="Name">
-            <Control>
-                <InputText @bind-Value="server.Name" class="form-control"></InputText>
-            </Control>
-            <ValidationControl>
-                <ValidationMessage For="() => server.Name"></ValidationMessage>
-            </ValidationControl>
-        </FieldComponent>
+        <div class="mb-3 col-3">
+            <label class="form-label">Server Name</label>
+            <InputText @bind-Value="server.Name" class="form-control"></InputText>
+            <ValidationMessage For="() => server.Name"></ValidationMessage>
+        </div>
 
-        <FieldComponent Label="City">
-            <Control>
-                <InputText @bind-Value="server.City" class="form-control"></InputText>
-            </Control>
-            <ValidationControl>
-                <ValidationMessage For="() => server.City"></ValidationMessage>
-            </ValidationControl>
-        </FieldComponent>
+        <div class="mb-3 col-3">
+            <label class="form-label">Server City</label>
+            <br />
+            <InputSelect @bind-Value="server.City" class="form-range">
+                <option></option>
+                @foreach (var city in cities)
+                {
+                    if (server.City != city)
+                    {
+                        <option value="@city">@city</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="() => server.City"></ValidationMessage>
+        </div>
 
-        <FieldComponent Label="Online">
-            <Control>
-                <InputCheckbox @bind-Value="server.IsOnline" class="form-check-input"></InputCheckbox>
-            </Control>
-        </FieldComponent>
-
+        <InputCheckbox @bind-Value="server.IsOnline" class="form-check-input"></InputCheckbox>
+        <label class="form-check-label">Server is online</label>
         <br />
+        <br />
+
         <button class="btn btn-primary" type="submit">Save</button>
         &nbsp;
         <a href="/servers" class="btn btn-primary">Close</a>
+
     </EditForm>
 }
 
@@ -48,12 +52,14 @@
     [SupplyParameterFromForm]
     private Server server { get; set; } = new Server() { IsOnline = false };
 
+    private List<string> cities = CitiesRepository.GetCities();
+
     private void Submit()
     {
         if (server != null)
         {
             ServersRepository.AddServer(server);
-            navigationManager.NavigateTo("/servers");
+            NavigationManager.NavigateTo("/servers");
         }
 
     }

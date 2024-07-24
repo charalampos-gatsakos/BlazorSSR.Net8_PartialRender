@@ -6,4 +6,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Components\Controls\DeleteServerComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Controls\DeleteServerComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Controls\DeleteServerComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Controls\DeleteServerComponent.razor" />
+  </ItemGroup>
+
 </Project>
