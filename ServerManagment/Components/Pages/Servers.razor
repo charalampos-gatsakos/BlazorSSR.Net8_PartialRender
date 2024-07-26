@@ -48,12 +48,15 @@
                         </span>
                     </span>
 
-                    <a href="/servers/@server.ServerId" class="btn btn-outline-primary mx-1" style="background-color: blueviolet; color: white;">Edit</a>
-                    <EditForm Model="server"
-                              FormName="@($"form-server-{server.ServerId}")"
-                              OnValidSubmit="@(() => { DeleteServer(server.ServerId); })">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </EditForm>
+                    <div>
+                        <a href="/servers/@server.ServerId" class="btn btn-outline-primary col-md-12" style="margin-bottom: 5px; background-color: blueviolet; color: white;">Edit</a>
+                        <EditForm Model="server"
+                                  FormName="@($"form-server-{server.ServerId}")"
+                                  OnValidSubmit="@(() => { DeleteServer(server.ServerId); })">
+
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </EditForm>
+                    </div>
                 </li>
             }
         </ul>
