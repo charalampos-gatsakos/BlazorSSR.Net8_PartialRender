@@ -1,4 +1,6 @@
 ﻿@page "/servers"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
 @using ServerManagment.Models
 @using ServerManagment.Components.Controls
 
@@ -12,7 +14,13 @@
             <div class="card mx-2 my-2" style="width: 8rem;">
                 <img src="@($"/images/{city}.png")" class="card-img-top" alt="@city">
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary" style="margin-right: 10px;"> @city </button>
+                    @if (servers != null)
+                    {
+                        <EditForm Model="servers" FormName="updateServersList" OnSubmit="@(() => UpdateServerList(city))">
+
+                            <button type="submit" class="btn btn-primary" style="margin-right: 10px;"> @city </button>
+                        </EditForm>
+                    }
                 </div>
             </div>
         }
@@ -26,14 +34,52 @@
 </div>
 <br />
 
-<ServersListComponent @rendermode="InteractiveServer"></ServersListComponent>
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <ul class="list-group col-6">
+
+            @foreach (var server in servers)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        @server.Name in @server.City is
+                        <span style="color:@((server.IsOnline ? "green" : "red"))">
+                            @(server.IsOnline ? "online" : "offline")
+                        </span>
+                    </span>
+
+                    <a href="/servers/@server.ServerId" class="btn btn-outline-primary mx-1" style="background-color: blueviolet; color: white;">Edit</a>
+                    <EditForm Model="server"
+                              FormName="@($"form-server-{server.ServerId}")"
+                              OnValidSubmit="@(() => { DeleteServer(server.ServerId); })">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </EditForm>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+
 
 @code {
 
+    [SupplyParameterFromForm]
+    private List<Server>? servers { get; set; }
+
+    protected override void OnParametersSet() => servers ??= ServersRepository.GetServersByCity("");
+
+    private void UpdateServerList(string city) => servers = ServersRepository.GetServersByCity(city);
+
     private List<string> cities = CitiesRepository.GetCities();
+
     private void DeleteServer(int serverId)
     {
-        ServersRepository.DeleteServer(serverId);
+        if (serverId > 0)
+        {
+            ServersRepository.DeleteServer(serverId);
+            NavigationManager.Refresh(true);
+        }
     }
 
 }
